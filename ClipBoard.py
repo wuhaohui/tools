@@ -12,22 +12,22 @@ import keyboard
 class ClipBoard(QWidget):
 
     def __init__(self):
-
         app = QApplication(sys.argv)
         super().__init__()
-        self.show()
+        # self.show()
         self.setHotKey()  # 设置热键
         sys.exit(app.exec_())
 
     def setHotKey(self):
         print('initHotKey')
+
         # self.bbs = QShortcut(QKeySequence(Qt.Key_F6), self)
         # self.key_f7 = QShortcut(QKeySequence(Qt.Key_F7), self)
         # self.bbs.activated.connect(self.transformTxtForMysql)
         # self.key_f7.activated.connect(self.transImage)
         keyboard.add_hotkey('f6', lambda: self.transformTxtForMysql())
-        keyboard.add_hotkey('f7', lambda: self.transImage)
-        keyboard.wait()
+        keyboard.add_hotkey('f7', lambda: self.transImage())
+        # keyboard.wait()
 
     # 转换成 '123','12'
     def transformTxtForMysql(self):
