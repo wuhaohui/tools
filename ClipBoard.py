@@ -1,12 +1,11 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QGraphicsView, QShortcut
-from PyQt5.QtGui import QKeySequence
 from PyQt5.QtCore import Qt, QByteArray, QBuffer, QIODevice
+from PyQt5.QtGui import QClipboard
 import re
-import os
-import configparser
 from aip import AipOcr
 import keyboard
+import win32clipboard
 
 
 class ClipBoard(QWidget):
@@ -14,7 +13,7 @@ class ClipBoard(QWidget):
     def __init__(self):
         app = QApplication(sys.argv)
         super().__init__()
-        # self.show()
+        self.show()
         self.setHotKey()  # 设置热键
         sys.exit(app.exec_())
 
@@ -25,21 +24,28 @@ class ClipBoard(QWidget):
         # self.key_f7 = QShortcut(QKeySequence(Qt.Key_F7), self)
         # self.bbs.activated.connect(self.transformTxtForMysql)
         # self.key_f7.activated.connect(self.transImage)
-        keyboard.add_hotkey('f6', lambda: self.transformTxtForMysql())
-        keyboard.add_hotkey('f7', lambda: self.transImage())
+        keyboard.add_hotkey('f7', lambda: self.transformTxtForMysql())
+        # keyboard.add_hotkey('Ctrl+q', lambda: self.transformTxtForMysql())
+        # keyboard.add_hotkey('f7', lambda: self.transImage())
         # keyboard.wait()
 
     # 转换成 '123','12'
     def transformTxtForMysql(self):
         clipboard = QApplication.clipboard()
         text = clipboard.text()
-        pattern = re.compile(r'(\S+)')
-        data = pattern.findall(text)
-        newText = ""
-        for row in data:
-            newText += '"' + row + '",'
-        clipboard.setText(newText.strip(','))
-        print('替换成功')
+        # mimeData = clipboard.mimeData()
+        if len(text) > 0:
+            pattern = re.compile(r'(\S+)')
+            data = pattern.findall(text)
+            newText = ""
+            for row in data:
+                newText += '"' + row + '",'
+            print(newText)
+            clipboard.setText(newText.strip(','))
+            print('替换成功')
+        else:
+            self.transImage()
+
 
     # 图片转文字
     def transImage(self):
