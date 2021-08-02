@@ -5,7 +5,6 @@ from PyQt5.QtGui import QClipboard
 import re
 from aip import AipOcr
 import keyboard
-import win32clipboard
 
 
 class ClipBoard(QWidget):
