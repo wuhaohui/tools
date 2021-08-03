@@ -26,7 +26,7 @@ class ClipBoard(QWidget):
         # self.key_f7 = QShortcut(QKeySequence(Qt.Key_F7), self)
         # self.bbs.activated.connect(self.transformTxtForMysql)
         # self.key_f7.activated.connect(self.transImage)
-        keyboard.add_hotkey('f7', lambda: self.transformTxtForMysql())
+        keyboard.add_hotkey('Ctrl+q', lambda: self.transformTxtForMysql())
         # keyboard.add_hotkey('Ctrl+q', lambda: self.transformTxtForMysql())
         # keyboard.add_hotkey('f7', lambda: self.transImage())
         # keyboard.wait()
