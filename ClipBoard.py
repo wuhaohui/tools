@@ -15,7 +15,7 @@ class ClipBoard(QWidget):
     def __init__(self):
         app = QApplication(sys.argv)
         super().__init__()
-        self.show()
+        # self.show()
         self.setHotKey()  # 设置热键
         sys.exit(app.exec_())
 
@@ -26,7 +26,8 @@ class ClipBoard(QWidget):
         # self.key_f7 = QShortcut(QKeySequence(Qt.Key_F7), self)
         # self.bbs.activated.connect(self.transformTxtForMysql)
         # self.key_f7.activated.connect(self.transImage)
-        keyboard.add_hotkey('Ctrl+q', lambda: self.transformTxtForMysql())
+        keyboard.add_hotkey('Ctrl+1', lambda: self.transformTxtForMysql())
+        keyboard.add_hotkey('Ctrl+2', lambda: self.setClipboardText("select * from "))
         # keyboard.add_hotkey('Ctrl+q', lambda: self.transformTxtForMysql())
         # keyboard.add_hotkey('f7', lambda: self.transImage())
         # keyboard.wait()
@@ -41,7 +42,7 @@ class ClipBoard(QWidget):
             data = pattern.findall(text)
             newText = ""
             for row in data:
-                newText += '"' + row + '",'
+                newText += '\'' + row + '\','
             print(newText)
             self.setClipboardText(newText.strip(','))
             # clipboard.setText(newText.strip(','))
@@ -63,6 +64,7 @@ class ClipBoard(QWidget):
         buffer.open(QIODevice.WriteOnly)
         clipboard.image().save(buffer, "jpeg")
         buffer.close()
+
         result = client.basicGeneral(ba)
         if result['words_result_num'] > 0:
             # 图片识别成功
@@ -78,6 +80,7 @@ class ClipBoard(QWidget):
         if sys == "Windows":
             win32clipboard.OpenClipboard()  # 打开剪贴板
             win32clipboard.SetClipboardData(win32con.CF_UNICODETEXT, content)  # 以Unicode文本形式放入剪切板
+            # win32clipboard.SetClipboardText(content)  # 以Unicode文本形式放入剪切板
             win32clipboard.CloseClipboard()  # 关闭剪贴板
         else:
             clipboard = QApplication.clipboard()
