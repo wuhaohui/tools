@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QGraphicsView, QShortcut
+from PyQt5.QtWidgets import QApplication, QWidget, QGraphicsView
 from PyQt5.QtCore import Qt, QByteArray, QBuffer, QIODevice
 from PyQt5.QtGui import QClipboard
 import re
@@ -27,7 +27,7 @@ class ClipBoard(QWidget):
         # self.bbs.activated.connect(self.transformTxtForMysql)
         # self.key_f7.activated.connect(self.transImage)
         keyboard.add_hotkey('Ctrl+1', lambda: self.transformTxtForMysql())
-        keyboard.add_hotkey('Ctrl+2', lambda: self.setClipboardText("select * from "))
+        keyboard.add_hotkey('Ctrl+2', lambda: self.readMysqlTableFiled())
         # keyboard.add_hotkey('Ctrl+q', lambda: self.transformTxtForMysql())
         # keyboard.add_hotkey('f7', lambda: self.transImage())
         # keyboard.wait()
@@ -49,6 +49,18 @@ class ClipBoard(QWidget):
             print('替换成功')
         else:
             self.transImage()
+
+    # 读取mysql字段
+    def readMysqlTableFiled(self):
+        clipboard = QApplication.clipboard()
+        text = clipboard.text()
+        rule = re.compile(r'`(\w+)`')
+        data = rule.findall(text)
+        newText = ""
+        for row in data:
+            newText += '\'' + row + '\','
+        print(newText)
+        self.setClipboardText(newText.strip(','))
 
     # 图片转文字
     def transImage(self):
